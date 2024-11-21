@@ -7,7 +7,7 @@ import {
   Navigate
 } from 'react-router-dom'
 import { RootState } from './store/store'
-import Login from './components/Login/Login'
+import Login from './components/LoginPage/LoginPage'
 import TodoPage from './components/TodoPage/TodoPage'
 
 const App: React.FC = () => {
