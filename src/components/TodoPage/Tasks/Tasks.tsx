@@ -1,28 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../../store/store'
-import {
-  completeTask,
-  trashTask,
-  restoreTask
-} from '../../../store/slices/tasksSlice'
-import {
-  Tabs,
-  Tab,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-  Box
-} from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
-import RestoreIcon from '@mui/icons-material/Restore'
-import CheckIcon from '@mui/icons-material/Check'
+import { Tabs, Tab, List, Box } from '@mui/material'
 import TasksStyles from './Tasks.style'
+import TaskItem from './TaskItem/TaskItem'
 
 const Tasks: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0) // Текущая вкладка
-  const dispatch = useDispatch()
   const tasks = useSelector((state: RootState) => state.tasks.tasks)
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
@@ -56,24 +40,12 @@ const Tasks: React.FC = () => {
       {/* Список дел */}
       <List sx={TasksStyles.list}>
         {filteredTasks.map((task) => (
-          <ListItem key={task.id} sx={TasksStyles.item}>
-            <ListItemText primary={task.text} sx={TasksStyles.text} />
-            {activeTab !== 3 && ( // Кнопки для активных дел
-              <>
-                <IconButton onClick={() => dispatch(completeTask(task.id))}>
-                  <CheckIcon />
-                </IconButton>
-                <IconButton onClick={() => dispatch(trashTask(task.id))}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            )}
-            {activeTab === 3 && ( // Кнопка восстановления из корзины
-              <IconButton onClick={() => dispatch(restoreTask(task.id))}>
-                <RestoreIcon />
-              </IconButton>
-            )}
-          </ListItem>
+          <TaskItem
+            key={task.id}
+            task={task}
+            activeTab={activeTab}
+            sx={{ item: TasksStyles.item, text: TasksStyles.text }}
+          />
         ))}
       </List>
     </Box>
