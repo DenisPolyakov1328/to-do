@@ -5,7 +5,8 @@ const TasksStyles: Record<string, SxProps<Theme>> = {
         mt: 4,
         bgcolor: 'grey',
         borderRadius: 5,
-        p: 3
+        p: 3,
+        maxHeight: '73vh'
     },
     tab: {
         '&.MuiTab-root': {
@@ -17,13 +18,22 @@ const TasksStyles: Record<string, SxProps<Theme>> = {
         }
     },
     list: {
-        width: '80%'
+        width: '80%',
+        mt: '30px',
+        p: 0,
+        overflowY: 'auto'
     },
     item: {
         border: 1,
         borderRadius: '1% 10px',
         borderColor: 'white',
-        my: '20px'
+        my: '20px',
+        '&:first-of-type': {
+            marginTop: 0,
+        },
+        '&:last-of-type': {
+            marginBottom: 0,
+        }
     },
     text: {
         color: 'white',

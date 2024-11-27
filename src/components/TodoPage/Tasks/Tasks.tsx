@@ -30,7 +30,11 @@ const Tasks: React.FC = () => {
       sx={TasksStyles.box}
     >
       {/* Вкладки */}
-      <Tabs value={activeTab} onChange={handleTabChange}>
+      <Tabs
+        value={activeTab}
+        onChange={handleTabChange}
+        sx={TasksStyles.tabContainer}
+      >
         <Tab label="Текущие дела" sx={TasksStyles.tab} />
         <Tab label="Все дела" sx={TasksStyles.tab} />
         <Tab label="Выполненные дела" sx={TasksStyles.tab} />
