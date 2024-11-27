@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../store/slices/authSlice'
-import { Box, TextField, Button, Typography, Container } from '@mui/material'
+import { Box, Button, Typography, Container } from '@mui/material'
+import LoginField from './loginField/LoginField'
+import loginPageStyles from './LoginPage.styles'
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('')
@@ -21,37 +23,38 @@ const Login: React.FC = () => {
         justifyContent="center"
         height="100vh"
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={loginPageStyles.header}
+        >
           Вход
         </Typography>
         <Box
           component="form"
           onSubmit={handleLogin}
-          sx={{ mt: 1, width: '100%' }}
+          sx={loginPageStyles.boxField}
         >
-          <TextField
+          <LoginField
             label="Имя пользователя"
-            variant="outlined"
-            fullWidth
-            margin="normal"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            sx={loginPageStyles.textField}
           />
-          <TextField
+          <LoginField
             label="Пароль"
-            variant="outlined"
             type="password"
-            fullWidth
-            margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            sx={loginPageStyles.textField}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3 }}
           >
             Войти
           </Button>

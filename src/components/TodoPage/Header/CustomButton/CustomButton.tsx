@@ -7,7 +7,7 @@ interface CustomButtonProps {
   iconPosition?: 'start' | 'end'
   color: 'primary' | 'error'
   children: React.ReactNode
-  style: SxProps<Theme>
+  sx: SxProps<Theme>
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -15,7 +15,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   icon,
   color,
   children,
-  style,
+  sx,
   iconPosition = 'start'
 }) => (
   <Button
@@ -25,7 +25,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     onClick={onClick}
     startIcon={iconPosition === 'start' ? icon : undefined}
     endIcon={iconPosition === 'end' ? icon : undefined}
-    sx={style}
+    sx={sx}
   >
     {children}
   </Button>

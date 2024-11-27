@@ -35,7 +35,7 @@ const Header: React.FC = () => {
         onClick={handleAddTask}
         icon={<Add />}
         iconPosition="start"
-        style={headerStyles.button}
+        sx={headerStyles.button}
       >
         Добавить
       </CustomButton>
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
         onClick={handleClearTasks}
         icon={<CustomMenuIcon />}
         iconPosition="end"
-        style={headerStyles.button}
+        sx={headerStyles.button}
       >
         Очистить
       </CustomButton>

@@ -13,6 +13,7 @@ const headerStyles: Record<string, SxProps<Theme>> = {
     textField: {
         '.MuiInputLabel-root': {
             color: 'white',
+            opacity: 0.8
         },
         '.MuiInputLabel-root.Mui-focused': {
             color: 'white',
