@@ -10,6 +10,7 @@ const TasksStyles: Record<string, SxProps<Theme>> = {
     },
     tab: {
         '&.MuiTab-root': {
+            flexDirection: 'row',
             color: 'white',
             opacity: 0.5
         },
