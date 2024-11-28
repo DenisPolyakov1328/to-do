@@ -10,7 +10,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
     dispatch(loginUser({ username, password }))
   }
 

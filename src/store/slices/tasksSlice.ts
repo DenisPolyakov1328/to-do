@@ -1,37 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Task {
-    id: string;
-    text: string;
-    status: 'active' | 'completed' | 'trashed';
-}
+import { loadFromLocalStorage, saveToLocalStorage } from '../../utils/localStorageUtils';
+import { Task } from '../../types/taskTypes';
 
 interface TasksState {
     tasks: Task[];
 }
 
-// Функция для загрузки данных из LocalStorage
-const loadFromLocalStorage = (): Task[] => {
-    try {
-        const tasks = localStorage.getItem('tasks');
-        return tasks ? JSON.parse(tasks) : [];
-    } catch (error) {
-        console.error('Ошибка загрузки данных из LocalStorage:', error);
-        return [];
-    }
-};
+const LOCAL_STORAGE_KEY = 'tasks';
 
-// Функция для сохранения данных в LocalStorage
-const saveToLocalStorage = (tasks: Task[]) => {
-    try {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    } catch (error) {
-        console.error('Ошибка сохранения данных в LocalStorage:', error);
-    }
-};
-
+// Инициализация состояния из LocalStorage
 const initialState: TasksState = {
-    tasks: loadFromLocalStorage(), // Загружаем начальное состояние из LocalStorage
+    tasks: loadFromLocalStorage<Task[]>(LOCAL_STORAGE_KEY) || [],
 };
 
 const tasksSlice = createSlice({
@@ -45,35 +24,26 @@ const tasksSlice = createSlice({
                 status: 'active',
             };
             state.tasks.push(newTask);
-            saveToLocalStorage(state.tasks);
+            saveToLocalStorage(LOCAL_STORAGE_KEY, state.tasks);
         },
         deleteTask: (state, action: PayloadAction<string>) => {
             state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-            saveToLocalStorage(state.tasks);
+            saveToLocalStorage(LOCAL_STORAGE_KEY, state.tasks);
         },
         clearTasks: (state) => {
             state.tasks = [];
-            saveToLocalStorage(state.tasks);
+            saveToLocalStorage(LOCAL_STORAGE_KEY, state.tasks);
         },
-        completeTask: (state, action: PayloadAction<string>) => {
-            const task = state.tasks.find((task) => task.id === action.payload);
-            if (task) task.status = 'completed';
-            saveToLocalStorage(state.tasks);
-        },
-        trashTask: (state, action: PayloadAction<string>) => {
-            const task = state.tasks.find((task) => task.id === action.payload);
-            if (task) task.status = 'trashed';
-            saveToLocalStorage(state.tasks);
-        },
-        restoreTask: (state, action: PayloadAction<string>) => {
-            const task = state.tasks.find((task) => task.id === action.payload);
-            if (task) task.status = 'active';
-            saveToLocalStorage(state.tasks);
+        updateTaskStatus: (state, action: PayloadAction<{ id: string; status: Task['status'] }>) => {
+            const task = state.tasks.find((task) => task.id === action.payload.id);
+            if (task) {
+                task.status = action.payload.status;
+                saveToLocalStorage(LOCAL_STORAGE_KEY, state.tasks);
+            }
         },
     },
 });
 
-export const { addTask, deleteTask, clearTasks, completeTask, trashTask, restoreTask } =
-    tasksSlice.actions;
+export const { addTask, deleteTask, clearTasks, updateTaskStatus } = tasksSlice.actions;
+
 export default tasksSlice.reducer;
-export type { Task };

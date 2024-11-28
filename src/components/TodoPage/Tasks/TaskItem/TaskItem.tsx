@@ -1,9 +1,5 @@
 import { useDispatch } from 'react-redux'
-import {
-  completeTask,
-  trashTask,
-  restoreTask
-} from '../../../../store/slices/tasksSlice'
+import { updateTaskStatus } from '../../../../store/slices/tasksSlice'
 import {
   ListItem,
   ListItemText,
@@ -14,12 +10,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import RestoreIcon from '@mui/icons-material/Restore'
 import CheckIcon from '@mui/icons-material/Check'
-
-interface Task {
-  id: string
-  text: string
-  status: 'active' | 'completed' | 'trashed'
-}
+import { Task } from '../../../../types/taskTypes'
 
 interface TaskItemProps {
   task: Task
@@ -33,21 +24,27 @@ interface TaskItemProps {
 const TaskItem: React.FC<TaskItemProps> = ({ task, activeTab, sx }) => {
   const dispatch = useDispatch()
 
+  const handleUpdateTaskStatus = (
+    status: 'active' | 'completed' | 'trashed'
+  ) => {
+    dispatch(updateTaskStatus({ id: task.id, status }))
+  }
+
   return (
     <ListItem key={task.id} sx={sx.item}>
       <ListItemText primary={task.text} sx={sx.text} />
       {activeTab !== 3 && ( // Кнопки для активных дел
         <>
-          <IconButton onClick={() => dispatch(completeTask(task.id))}>
+          <IconButton onClick={() => handleUpdateTaskStatus('completed')}>
             <CheckIcon />
           </IconButton>
-          <IconButton onClick={() => dispatch(trashTask(task.id))}>
+          <IconButton onClick={() => handleUpdateTaskStatus('trashed')}>
             <DeleteIcon />
           </IconButton>
         </>
       )}
       {activeTab === 3 && ( // Кнопка восстановления из корзины
-        <IconButton onClick={() => dispatch(restoreTask(task.id))}>
+        <IconButton onClick={() => handleUpdateTaskStatus('active')}>
           <RestoreIcon />
         </IconButton>
       )}

@@ -1,4 +1,4 @@
-import { Task } from '../store/slices/tasksSlice'
+import { Task } from '../types/taskTypes'
 
 export const filterTasks = (tasks: Task[], activeTab: number) => {
     switch (activeTab) {
