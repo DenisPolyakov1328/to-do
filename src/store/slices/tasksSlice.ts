@@ -45,30 +45,30 @@ const tasksSlice = createSlice({
                 status: 'active',
             };
             state.tasks.push(newTask);
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
         deleteTask: (state, action: PayloadAction<string>) => {
             state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
         clearTasks: (state) => {
             state.tasks = [];
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
         completeTask: (state, action: PayloadAction<string>) => {
             const task = state.tasks.find((task) => task.id === action.payload);
             if (task) task.status = 'completed';
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
         trashTask: (state, action: PayloadAction<string>) => {
             const task = state.tasks.find((task) => task.id === action.payload);
             if (task) task.status = 'trashed';
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
         restoreTask: (state, action: PayloadAction<string>) => {
             const task = state.tasks.find((task) => task.id === action.payload);
             if (task) task.status = 'active';
-            saveToLocalStorage(state.tasks); // Сохраняем изменения
+            saveToLocalStorage(state.tasks);
         },
     },
 });
@@ -76,3 +76,4 @@ const tasksSlice = createSlice({
 export const { addTask, deleteTask, clearTasks, completeTask, trashTask, restoreTask } =
     tasksSlice.actions;
 export default tasksSlice.reducer;
+export type { Task };
