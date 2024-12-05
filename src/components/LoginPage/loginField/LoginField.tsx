@@ -12,14 +12,13 @@ interface InputFieldProps {
   label: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onBlur: React.FocusEventHandler<HTMLInputElement>
   error?: boolean
   helperText?: string
   sx?: SxProps<Theme>
   isPasswordField?: boolean
 }
 
-const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+const LoginField = forwardRef<HTMLInputElement, InputFieldProps>(
   (
     { label, value, onChange, error, helperText, sx, isPasswordField = false },
     ref
@@ -60,4 +59,4 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   }
 )
 
-export default InputField
+export default LoginField
