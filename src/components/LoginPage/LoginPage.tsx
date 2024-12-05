@@ -1,18 +1,34 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../store/slices/authSlice'
 import { Box, Button, Typography, Container } from '@mui/material'
-import LoginField from './loginField/LoginField'
+import LoginField from './LoginField/LoginField'
+import { loginSchema, LoginFormValues } from '../../utils/validationSchemas'
 import loginPageStyles from './LoginPage.styles'
 
-const Login: React.FC = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const LoginPage: React.FC = () => {
   const dispatch = useDispatch()
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    dispatch(loginUser({ username, password }))
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: ''
+    },
+    mode: 'onChange'
+  })
+
+  const onSubmit = (data: LoginFormValues) => {
+    dispatch(loginUser(data))
+    if (!localStorage.getItem('isAuthenticated')) {
+      alert('Неверное имя пользователя или пароль')
+    }
   }
 
   return (
@@ -34,21 +50,36 @@ const Login: React.FC = () => {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleLogin}
+          onSubmit={handleSubmit(onSubmit)}
           sx={loginPageStyles.boxField}
+          noValidate
         >
-          <LoginField
-            label="Имя пользователя"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            sx={loginPageStyles.textField}
+          <Controller
+            name="username"
+            control={control}
+            render={({ field }) => (
+              <LoginField
+                {...field}
+                label="Имя пользователя"
+                error={!!errors.username}
+                helperText={errors.username?.message}
+                sx={loginPageStyles.textField}
+              />
+            )}
           />
-          <LoginField
-            label="Пароль"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={loginPageStyles.textField}
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <LoginField
+                {...field}
+                label="Пароль"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                sx={loginPageStyles.textField}
+                isPasswordField={true}
+              />
+            )}
           />
           <Button
             type="submit"
@@ -65,4 +96,4 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login
+export default LoginPage

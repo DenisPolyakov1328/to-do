@@ -1,31 +1,63 @@
-import React from 'react'
-import { TextField, SxProps, Theme } from '@mui/material'
+import React, { useState, forwardRef } from 'react'
+import {
+  TextField,
+  IconButton,
+  InputAdornment,
+  SxProps,
+  Theme
+} from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-interface LoginFieldProps {
+interface InputFieldProps {
   label: string
-  type?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur: React.FocusEventHandler<HTMLInputElement>
+  error?: boolean
+  helperText?: string
   sx?: SxProps<Theme>
+  isPasswordField?: boolean
 }
 
-const LoginField: React.FC<LoginFieldProps> = ({
-  label,
-  type = 'text',
-  value,
-  onChange,
-  sx
-}) => (
-  <TextField
-    label={label}
-    variant="outlined"
-    type={type}
-    fullWidth
-    margin="normal"
-    value={value}
-    onChange={onChange}
-    sx={sx}
-  />
+const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+  (
+    { label, value, onChange, error, helperText, sx, isPasswordField = false },
+    ref
+  ) => {
+    const [showPassword, setShowPassword] = useState(false)
+
+    const togglePasswordVisibility = () => {
+      setShowPassword((prev) => !prev)
+    }
+
+    return (
+      <TextField
+        {...{ label, value, onChange, error, helperText, sx }}
+        type={isPasswordField && !showPassword ? 'password' : 'text'}
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        inputRef={ref}
+        InputProps={
+          isPasswordField
+            ? {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={togglePasswordVisibility} edge="end">
+                      {showPassword ? (
+                        <VisibilityOff sx={{ color: 'white' }} />
+                      ) : (
+                        <Visibility sx={{ color: 'white' }} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }
+            : undefined
+        }
+      />
+    )
+  }
 )
 
-export default LoginField
+export default InputField
